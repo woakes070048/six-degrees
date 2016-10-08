@@ -56,8 +56,14 @@ app.use(localUser);
 /*            ROUTES           */
 /*                             */
 /*******************************/
+//pulls in bookshelf api middleware by requiring it as common js module
+let bookshelfApi = require('bookshelf-api');
 
+//create apiMiddleware which will store the result
+//of calling the bookshelf api fcn with a path to models directory
+let apiMiddleware = bookshelfApi({ path:'./models' });
 /* 1. ROUTES are loaded here */
+
 
 // let api = require('./routes/api1');
 let index = require('./routes/index');
@@ -68,6 +74,8 @@ let auth = require('./routes/auth');
 // app.use('/api/v1/', api);
 app.use('/auth', auth);
 app.use('/', index);
+//an exp method that allows us to associate a piece of middleware with a route
+app.use('/six-degrees', apiMiddleware);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
